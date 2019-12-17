@@ -25,7 +25,8 @@ def frontEnd():                                           # creates the interfac
             try:
                 with open('remindersData.csv', 'a', newline = '') as file:
                         writer = csv.writer(file)
-                        writer.writerow([exportData])  # export data to csv
+                        #removed the square brackets around exportData, this prevented writing to the csv properly
+                        writer.writerow(exportData)  # export data to csv
                                                         # input coming from line 60
 
             except():
