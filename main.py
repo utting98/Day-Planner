@@ -14,7 +14,21 @@ if os.path.exists('remindersData.csv') == False:           # check if file exist
     with open('remindersData.csv', 'a', newline = '') as file:
         writer = csv.writer(file)
         writer.writerow(["DATE", "NAME", "TYPE", "LENGTH"])
+        
+def countdown():
+    for i in dateList:
+        if dt.strptime(i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10):
+            if dt.strptime(i, '%Y-%m-%d') - dt.strptime('2019-12-25','%Y-%m-%d') <= datetime.timedelta(days = 1):
+                daysTo = str(dt.strptime(i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to christmas'
+                print(daysTo)
+            else:
+                daysTo = str(25 - int(dt.today().day)) + " days to christmas"
+            return daysTo
 
+def refresh(stringvar, time):
+    if time != dt.now():
+        stringvar = stringvar.set(countdown())
+        return stringvar
 
 def frontEnd():                                           # creates the interface window
     frontEnd.counter = 1
@@ -115,6 +129,13 @@ def frontEnd():                                           # creates the interfac
 
     print("today is ",str(curDay))
     Message(leftFrame, text = str("today is "+ str(todaysDate)), anchor = "ne").pack(side =TOP)
+    countdownString = StringVar(leftFrame)
+    countdownString.set(countdown())
+    print(countdownString)
+    frontEnd.eventMessage = Message(leftFrame, text = countdownString, relief = RAISED)
+    frontEnd.eventMessage.pack(side = TOP)
+    plannerWindow.update()
+    plannerWindow.after(200, lambda: refresh(countdownString, dt.now()))
 
     lastDay = int(calendar.monthrange(2019, 12)[1])  # get total number of days in month            
     print("days this month,", lastDay)
